@@ -11,7 +11,7 @@
     <title>Quitanda do Zé - Página Home</title>
 </head>
 
-<body>
+<body class="d-flex flex-column" style="min-height: 100vh;">
 
   <header>
     <!-- navbar -->
@@ -43,11 +43,13 @@
       </nav>
     </header>
 
-  <main class="mmainsobre">
+  <main class="flex-fill py-5">
+    {% block conteudo %}
 
+    {% endblock %}
   </main>
 
-    <footer class="border-top bg-light shadow border-3 border-dark border-opacity-25">
+  <footer class="border-top bg-light shadow border-3 border-dark border-opacity-25">
       <div class="container">
           <div class="row py-2">
               <div class="col-12 col-md-4 text-center">
