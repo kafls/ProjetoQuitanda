@@ -75,6 +75,7 @@ Contribuições são bem-vindas. Sinta-se à vontade para fazer um fork do repos
 
 ## Contato
 
+- [Karen]: Autora do projeto
 
 - [Rafael Ribas]: Instrutor de Programação Web Front-End.
 
