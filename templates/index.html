@@ -1,145 +1,28 @@
 {% extends 'modelo.html' %}
 {% block conteudo %}
-
+{% if not produtos %}
+    <h1 class="display-5 text-center text-danger">Estamos preparando as promoções desta semana...</h1>
+    <h2 class="display-4 text-center text-seccess">Retorne em breve.</h2>
+    {% else %}
+    <div class="container">
+        <div class="row g-3">
+            {% for produto in produtos %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                <div class="card text-center bg-light">
+                    <img src="../static/img/produtos/{{ produto['img_prod']}}" class="card-img-top" />
+                    <div class="card-header fs-3 text-danger">R$ {{ produto['preco_prod'] }}</div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ produto['nome_prod'] }}</h5>
+                        <p class="card-text truncar-31">{{ produto['desc_prod'] }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
 <main class="flex-fill">
         
-  <h1 class="text-center p-3" style="margin: 0 auto;">Ofertas da Semana</h1>
-  <div class="container">
-    <div class="row">
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000001.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Banana</h5>
-            <p class="card-text"> Uma fruta tropical, amarela e doce, rica em potássio e versátil para o consumo.</p>
-            <a href="#" class="btn btn-primary disabled">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000002.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Abacaxi</h5>
-            <p class="card-text">Uma fruta tropical de sabor agridoce, com uma textura suculenta e aroma refrescante.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-      
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000003.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Mamão</h5>
-            <p class="card-text">Uma fruta de polpa alaranjada, suave e adocicada, conhecida por seus benefícios à digestão.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000004.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Maçã</h5>
-            <p class="card-text">Uma fruta crocante e variada, de cores vibrantes, rica em antioxidantes e vitaminas.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000005.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Goiaba</h5>
-            <p class="card-text">Fruta de polpa suculenta e sabor adocicado, rica em vitamina C e fibras.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000006.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Laranja</h5>
-            <p class="card-text">Uma fruta cítrica, refrescante e cheia de vitamina C, ideal para sucos e lanches saudáveis.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000007.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Abacate</h5>
-            <p class="card-text">Fruta cremosa, rica em gorduras saudáveis, perfeita para guacamole e saladas.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000008.png" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Cenoura</h5>
-            <p class="card-text">Uma raiz alaranjada, rica em betacarotenos, que contribui para a saúde dos olhos.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000009.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Abóbora</h5>
-            <p class="card-text">Um vegetal de polpa alaranjada, ideal para sopas e pratos saudáveis.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000010.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Abobrinha</h5>
-            <p class="card-text">Um vegetal versátil, com textura suave, ótimo para grelhar ou fazer espaguete de legumes.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000011.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Couve-Flor</h5>
-            <p class="card-text"> Um vegetal crucífero, de sabor suave, ideal para acompanhamentos e pratos de baixa caloria.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12 col-sm-6 col-lg-4 p-3">
-        <div class="card shadow mb-3 bg-white rounded">
-          <img src="../static/img/produtos/000012.png" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Tomate</h5>
-            <p class="card-text">Um fruto vermelho e suculento, essencial na culinária, rico em licopeno e vitaminas.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 </main>
 
-{% endblock %}
