@@ -128,18 +128,27 @@ def editar(id_prod):
 
 @app.route("/editarprodutos", methods=['POST'])
 def editprod():
-    id_prod=request.form['id_prod']
-    nome_prod=request.form['nome_prod']
-    desc_prod=request.form['desc_prod']
-    preco_prod=request.form['preco_prod']
-    img_prod=request.files['img_prod']
-    id_foto=str(uuid.uuid4().hex)
-    filename=id_foto+nome_prod+'.png'
-    img_prod.save("static/img/produtos/"+filename)
-    conexao = conecta_database()
-    conexao.execute('UPDATE produtos SET nome_prod = ?, desc_prod = ?, preco_prod = ?, img_prod = ? WHERE id_prod = ?',(nome_prod, desc_prod, preco_prod, filename, id_prod))
-    conexao.commit()
-    conexao.close()
+    id_prod = int(request.form['id_prod'])
+    nome_prod = request.form['nome_prod']
+    desc_prod = request.form['desc_prod']
+    preco_prod = request.form['preco_prod']
+    img_prod = request.files['img_prod']
+
+    with conecta_database() as conexao:
+        # Recupere o valor atual do campo img_prod
+        current_img_prod = conexao.execute('SELECT img_prod FROM produtos WHERE id_prod = ?', (id_prod,)).fetchone()[0]
+
+        if img_prod and (img_prod.filename):
+            id_foto = str(uuid.uuid4().hex)
+            filename = id_foto + nome_prod + '.png'
+            img_prod.save("static/img/produtos/" + filename)
+        else:
+            # Se não há nova imagem, mantenha a imagem existente
+            filename = current_img_prod
+
+        conexao.execute('UPDATE produtos SET nome_prod = ?, desc_prod = ?, preco_prod = ?, img_prod = ? WHERE id_prod = ?', (nome_prod, desc_prod, preco_prod, filename, id_prod))
+        conexao.commit()
+
     return redirect('/adm')
 
 @app.route("/busca", methods=["post"])
