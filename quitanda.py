@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session
+import os
 import sqlite3 as sql
 import uuid #gera um núme aleatório único para o nome das imagens
 
@@ -49,7 +50,7 @@ def acesso():
     senha_informada = request.form["senha"]
     if usuario == usuario_informado and senha == senha_informada:
         session["login"] = True
-        return redirect('/') #homepage
+        return redirect('/adm') #homepage
     else:
         return render_template("login.html", msg="Usuário/Senha estão incorretos!")
 
@@ -102,12 +103,16 @@ def cadastro():
     else:
         return redirect("/login")
     
-@app.route("/excluir/<id>")
-def excluir(id):
+@app.route("/excluir/<id_prod>")
+def excluir(id_prod):
     if verifica_sessao():
-        id = int(id)
+        id_prod = int(id_prod)
         conexao = conecta_database()
-        conexao.execute('DELETE FROM produtos WHERE id_prod = ?', (id,))
+        produto = conexao.execute('SELECT * FROM produtos WHERE id_prod = ?', (id_prod,)).fetchall()
+        filename_old = produto[0]['img_prod']
+        excluir_arquivo = "static/img/produtos/"+filename_old
+        os.remove(excluir_arquivo)
+        conexao.execute('DELETE FROM produtos WHERE id_prod = ?', (id_prod,))
         conexao.commit()
         conexao.close()
         return redirect('/adm')
@@ -128,27 +133,19 @@ def editar(id_prod):
 
 @app.route("/editarprodutos", methods=['POST'])
 def editprod():
-    id_prod = int(request.form['id_prod'])
+    id_prod = request.form['id_prod']
     nome_prod = request.form['nome_prod']
     desc_prod = request.form['desc_prod']
     preco_prod = request.form['preco_prod']
     img_prod = request.files['img_prod']
-
-    with conecta_database() as conexao:
-        # Recupere o valor atual do campo img_prod
-        current_img_prod = conexao.execute('SELECT img_prod FROM produtos WHERE id_prod = ?', (id_prod,)).fetchone()[0]
-
-        if img_prod and (img_prod.filename):
-            id_foto = str(uuid.uuid4().hex)
-            filename = id_foto + nome_prod + '.png'
-            img_prod.save("static/img/produtos/" + filename)
-        else:
-            # Se não há nova imagem, mantenha a imagem existente
-            filename = current_img_prod
-
-        conexao.execute('UPDATE produtos SET nome_prod = ?, desc_prod = ?, preco_prod = ?, img_prod = ? WHERE id_prod = ?', (nome_prod, desc_prod, preco_prod, filename, id_prod))
-        conexao.commit()
-
+    conexao = conecta_database()
+    if img_prod:
+        produto = conexao.execute('SELECT * FROM produtos WHERE id_prod = ?', (id_prod,)).fetchall()
+        filename = produto[0]['img_prod']
+        img_prod.save("static/img/produtos"+filename)
+    conexao.execute('UPDATE produtos SET nome_prod = ?, desc_prod = ?, preco_prod = ? WHERE id_prod = ?', (nome_prod, desc_prod,preco_prod, id_prod))
+    conexao.commit()
+    conexao.close()
     return redirect('/adm')
 
 @app.route("/busca", methods=["post"])
@@ -158,10 +155,5 @@ def busca():
     produtos = conexao.execute('SELECT * FROM produtos WHERE nome_prod LIKE "%" || ? || "%"',(busca,)).fetchall()
     title = "Home"
     return render_template("index.html", produtos=produtos, title=title)
-
-
-
-
-
 
 app.run(debug=True)
